@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-// TODO: Jab 'flutterfire configure' command run kar lo, tab is line ko uncomment kar dena:
-// import 'firebase_options.dart';
-
+import 'package:get/get.dart';
 void main() async {
-  // Firebase initialize karne se pehle Flutter engine ko properly load hone ka wait karte hain
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
@@ -21,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       
       localizationsDelegates: const [

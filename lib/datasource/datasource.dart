@@ -83,20 +83,12 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
     GridColumn column,
     CellSubmit submitCell,
   ) {
-    final controller = TextEditingController(
-      text: dataGridRow
-          .getCells()
-          .firstWhere((e) => e.columnName == column.columnName)
-          .value
-          .toString(),
-    );
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       alignment: Alignment.centerLeft,
       child: TextField(
-        controller: controller,
-        autofocus: true,
+        controller: _editingController,
+        focusNode: _focusNode,
         onChanged: (value) {
           _newValue = value;
         },
@@ -106,6 +98,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
   }
 
   dynamic _newValue;
+  TextEditingController? _editingController;
+  FocusNode? _focusNode;
 
   @override
   Future<void> onCellSubmit(
@@ -157,6 +151,11 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
         'lastUpdated': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
     }
+
+    _editingController?.dispose();
+    _editingController = null;
+    _focusNode?.dispose();
+    _focusNode = null;
   }
 
   @override
@@ -180,6 +179,11 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
         .getCells()
         .firstWhere((e) => e.columnName == column.columnName)
         .value;
+
+    _editingController = TextEditingController(text: _newValue?.toString() ?? '');
+    _focusNode = FocusNode();
+    _focusNode?.requestFocus();
+    
     return true;
   }
 
@@ -190,5 +194,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
     GridColumn column,
   ) {
     _newValue = null;
+    _editingController?.dispose();
+    _editingController = null;
+    _focusNode?.dispose();
+    _focusNode = null;
   }
 }
